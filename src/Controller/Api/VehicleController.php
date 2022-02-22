@@ -16,7 +16,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/api/vehicle")
+ * @Route("/api")
  */
 class VehicleController extends JsonController
 {
@@ -37,7 +37,7 @@ class VehicleController extends JsonController
     }
 
     /**
-     * @Route("/", name="vehicles_list", methods={"GET"})
+     * @Route("/vehicles", name="vehicles_list", methods={"GET", "POST"})
      *
      * @param Request $request
      * @return JsonResponse
@@ -46,21 +46,23 @@ class VehicleController extends JsonController
      */
     public function index(Request $request): JsonResponse
     {
-        $filter = new VehicleFilter($request->get('status'), $request->get('type'));
+        $data = $request->toArray();
+        $status = (empty($data['status']) ? null : $data['status']);
+        $type = (empty($data['type']) ? null : $data['type']);
+        $offset = (empty($data['offset']) ? 0 : $data['offset']);
+        $limit = (empty($data['limit']) ? 10 : $data['limit']);
+
+        $filter = new VehicleFilter($status, $type, $offset, $limit);
 
         try {
-            return $this->respond($this->vehicleService->get(
-                $filter,
-                $request->get('offset', 0),
-                $request->get('limit', 10)
-            ));
+            return $this->respond($this->vehicleService->get($filter));
         } catch (Exception $e) {
-            return $this->error();
+            return $this->error($e->getMessage());
         }
     }
 
     /**
-     * @Route("/", name="vehicle_create", methods={"POST"})
+     * @Route("/vehicle", name="vehicle_create", methods={"POST"})
      *
      * @param Request $request
      * @return JsonResponse
@@ -83,7 +85,7 @@ class VehicleController extends JsonController
     }
 
     /**
-     * @Route("/{id}", name="vehicle_update", methods={"PATCH", "PUT"})
+     * @Route("/vehicle/{id}", name="vehicle_update", methods={"PATCH", "PUT"})
      *
      * @param Request $request
      * @param int $id
@@ -109,7 +111,7 @@ class VehicleController extends JsonController
     }
 
     /**
-     * @Route("/{id}", name="vehicle_delete", methods={"DELETE"})
+     * @Route("/vehicle/{id}", name="vehicle_delete", methods={"DELETE"})
      *
      * @param int $id
      * @return JsonResponse

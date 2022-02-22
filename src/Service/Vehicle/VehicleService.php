@@ -41,20 +41,20 @@ class VehicleService
 
     /**
      * @param VehicleFilter $filter
-     * @param int $offset
-     * @param int $limit
      * @return array
      * @throws NoResultException
      * @throws NonUniqueResultException
      */
-    public function get(VehicleFilter $filter, int $offset = 0, int $limit = 10): array
+    public function get(VehicleFilter $filter): array
     {
         $vehicles = $this->createQuery($filter)
             ->select('v')
-            ->setFirstResult($offset)
-            ->setMaxResults($limit)->getQuery()->getResult();
+            ->setFirstResult($filter->getOffset())
+            ->setMaxResults($filter->getLimit())
+            ->getQuery()->getResult();
         $countQuery = $this->createQuery($filter);
-        $count = $countQuery->select($countQuery->expr()->count('v'))->getQuery()->getSingleScalarResult();
+        $count = $countQuery->select($countQuery->expr()->count('v'))
+            ->getQuery()->getSingleScalarResult();
 
         return [
             'count' => $count,
@@ -70,10 +70,10 @@ class VehicleService
     {
         $qb = $this->em->createQueryBuilder()->from(Vehicle::class, 'v');
         if ($filter->getType()) {
-            $qb->andWhere($qb->expr()->eq('v.type', $filter->getType()));
+            $qb->andWhere($qb->expr()->eq('v.type', sprintf("'%s'", $filter->getType())));
         }
         if ($filter->getStatus()) {
-            $qb->andWhere($qb->expr()->eq('v.status', $filter->getStatus()));
+            $qb->andWhere($qb->expr()->eq('v.status', sprintf("'%s'", $filter->getStatus())));
         }
         return $qb;
     }

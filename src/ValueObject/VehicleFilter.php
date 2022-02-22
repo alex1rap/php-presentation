@@ -16,13 +16,27 @@ class VehicleFilter
     protected $status;
 
     /**
+     * @var integer
+     */
+    protected $offset;
+
+    /**
+     * @var integer
+     */
+    protected $limit;
+
+    /**
      * @param string|null $status
      * @param string|null $type
+     * @param int $offset
+     * @param int $limit
      */
-    public function __construct(?string $status, ?string $type)
+    public function __construct(?string $status, ?string $type, int $offset = 0, int $limit = 10)
     {
         $this->status = $status;
         $this->type = $type;
+        $this->offset = $offset;
+        $this->limit = $limit;
     }
 
     /**
@@ -39,6 +53,22 @@ class VehicleFilter
     public function getStatus(): ?string
     {
         return $this->status;
+    }
+
+    /**
+     * @return int
+     */
+    public function getOffset(): int
+    {
+        return $this->offset;
+    }
+
+    /**
+     * @return int
+     */
+    public function getLimit(): int
+    {
+        return $this->limit;
     }
 
 }
