@@ -37,7 +37,7 @@ class VehicleController extends JsonController
     }
 
     /**
-     * @Route("/vehicles", name="vehicles_list", methods={"GET", "POST"})
+     * @Route("/vehicles", name="vehicles_list", methods={"POST"})
      *
      * @param Request $request
      * @return JsonResponse
