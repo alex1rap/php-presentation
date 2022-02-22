@@ -19,9 +19,17 @@ class VehicleService
     public const TYPE_CAR = 'car';
     public const TYPE_TRUCK = 'truck';
 
+    public const STATUS_AVAILABLE = 'available';
+    public const STATUS_SOLD = 'sold';
+
     protected const ALLOWED_TYPES = [
         self::TYPE_CAR,
         self::TYPE_TRUCK
+    ];
+
+    protected const ALLOWED_STATUSES = [
+        self::STATUS_AVAILABLE,
+        self::STATUS_SOLD
     ];
 
     protected const POLLUTION_CERTIFICATES = ['A', 'B', 'C'];
@@ -141,6 +149,9 @@ class VehicleService
      */
     protected function validateVehicle(Vehicle $vehicle): void
     {
+        if (in_array($vehicle->getStatus(), self::ALLOWED_STATUSES)) {
+            throw new InvalidArgumentException('Vehicle status is not supported.');
+        }
         if (!in_array($vehicle->getType(), self::ALLOWED_TYPES)) {
             throw new InvalidArgumentException('Vehicle type is not supported.');
         }
