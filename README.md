@@ -32,7 +32,7 @@ bin/console doctrine:migrations:migrate
 symfony server:start
 ```
 
-# Routes: #
+# Endpoints: #
 
 ### Postman collection: ###
 
