@@ -48,7 +48,7 @@ class Vehicle
      *
      * @Groups({"safe"})
      */
-    private $price;
+    private $price = 0;
 
     /**
      * @var string
@@ -75,7 +75,7 @@ class Vehicle
      *
      * @Groups({"safe"})
      */
-    private $seats;
+    private $seats = 0;
 
     /**
      * @var string|null

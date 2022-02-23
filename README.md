@@ -125,7 +125,7 @@ symfony server:start
             "header": [],
             "body": {
               "mode": "raw",
-              "raw": "{\n    \"model\": \"R420\",\n    \"brand\": \"Scania\",\n    \"type\": \"truck\",\n    \"status\": \"sold\",\n    \"price\": 6000000,\n    \"seats\": 0,\n    \"pollutionCertificate\": \"A\"\n}\n",
+              "raw": "{\n    \"model\": \"R420\",\n    \"brand\": \"Scania\",\n    \"type\": \"truck\",\n    \"status\": \"sold\",\n    \"price\": 6000000,\n    \"seats\": 0,\n    \"pollution_certificate\": \"A\"\n}\n",
               "options": {
                 "raw": {
                   "language": "json"

@@ -16,7 +16,7 @@ class AbstractRequestToEntityMapper
     {
         foreach ($request->toArray() as $key => $value) {
             if (!in_array($key, $excludedFields)) {
-                $method = 'set' . ucfirst($key);
+                $method = 'set' . StringHelper::snakeCaseToCamelCase($key, true);
                 if (method_exists($entity, $method)) {
                     $entity->{$method}($value);
                 }

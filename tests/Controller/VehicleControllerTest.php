@@ -2,7 +2,6 @@
 
 namespace App\Tests\Controller;
 
-
 use App\Service\Vehicle\VehicleService;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
@@ -30,16 +29,8 @@ class VehicleControllerTest extends WebTestCase
         $this->assertArrayHasKey('items', $responseData);
     }
 
-    public function testCarCreation(): void
+    protected function testVehicleCreation(array $vehicleData): void
     {
-        $car = [
-            'model' => 'T13110 Sens',
-            'brand' => 'Daewoo',
-            'status' => VehicleService::STATUS_AVAILABLE,
-            'price' => 65000,
-            'type' => VehicleService::TYPE_CAR,
-            'seats' => 5
-        ];
         $client = static::createClient();
         $client->request(
             'POST',
@@ -47,7 +38,7 @@ class VehicleControllerTest extends WebTestCase
             [],
             [],
             ['CONTENT_TYPE' => 'application/json'],
-            json_encode($car)
+            json_encode($vehicleData)
         );
         $response = $client->getResponse();
         $this->assertTrue($response->headers->contains('Content-Type', 'application/json'));
@@ -56,9 +47,33 @@ class VehicleControllerTest extends WebTestCase
         $this->assertArrayHasKey('status', $responseData);
         $this->assertArrayHasKey('vehicle', $responseData);
         $this->assertEquals('created', $responseData['status']);
-        foreach ($car as $key => $value) {
+        foreach ($vehicleData as $key => $value) {
             $this->assertEquals($value, $responseData['vehicle'][$key]);
         }
+    }
+
+    public function testCarCreation(): void
+    {
+        $this->testVehicleCreation([
+            'model' => 'T13110 Sens',
+            'brand' => 'Daewoo',
+            'status' => VehicleService::STATUS_AVAILABLE,
+            'price' => 65000,
+            'type' => VehicleService::TYPE_CAR,
+            'seats' => 5
+        ]);
+    }
+
+    public function testTruckCreation(): void
+    {
+        $this->testVehicleCreation([
+            "model" => "R420",
+            "brand" => "Scania",
+            "type" => "truck",
+            "status" => "sold",
+            "price" => 6000000,
+            "pollution_certificate" => "A"
+        ]);
     }
 
 }
