@@ -149,11 +149,17 @@ class VehicleService
      */
     protected function validateVehicle(Vehicle $vehicle): void
     {
-        if (in_array($vehicle->getStatus(), self::ALLOWED_STATUSES)) {
-            throw new InvalidArgumentException('Vehicle status is not supported.');
+        if (!in_array($vehicle->getStatus(), self::ALLOWED_STATUSES)) {
+            throw new InvalidArgumentException(sprintf(
+                'Vehicle status "%s" is not supported.',
+                $vehicle->getStatus()
+            ));
         }
         if (!in_array($vehicle->getType(), self::ALLOWED_TYPES)) {
-            throw new InvalidArgumentException('Vehicle type is not supported.');
+            throw new InvalidArgumentException(sprintf(
+                'Vehicle type "%s" is not supported.',
+                $vehicle->getType()
+            ));
         }
         if ($vehicle->getType() === self::TYPE_TRUCK) {
             $this->validateTruck($vehicle);
