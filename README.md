@@ -24,6 +24,7 @@ cd php-presentation
 
 ```shell
 bin/console doctrine:migrations:migrate
+bin/console doctrine:migrations:migrate --env=test
 ```
 
 - ### Start debug server: ###
